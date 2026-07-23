@@ -15,7 +15,7 @@ def auc(y_true:np.ndarray, y_pred:np.ndarray) -> float:
     """
     # 按照预测概率从大到小排序，越靠前的样本预测为正类的概率越大，预测为负类的概率越小
     ## 阈值设定为各个不同的值，通过累计相加计算阈值调整时，相应的TP与FP值与比率
-    idx = np.argsort(y_pred)[::-1]
+    idx = np.argsort(y_pred, axis=0)[::-1]
     y_true = y_true[idx]
     y_pred = y_pred[idx]
 
