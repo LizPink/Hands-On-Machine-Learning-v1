@@ -2,6 +2,7 @@ import numpy as np
 """
 这个模块负责保存分类模型相关的评价方法
 """
+
 def acc(y_true:np.ndarray, y_pred:np.ndarray) -> float:
     """
     计算模型预测的准确率，返回准确率
@@ -29,11 +30,5 @@ def auc(y_true:np.ndarray, y_pred:np.ndarray) -> float:
 
     return auc
 
-if __name__ == "__main__":
-    y_true = np.array([0,1,0,1,1])
-    y_pred = np.array([0.1, 0.2, 0.3, 0.5, 0.7])
-
-    aucValue = auc(y_true=y_true, y_pred=y_pred)
-    print(aucValue)
 
 
