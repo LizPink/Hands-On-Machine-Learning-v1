@@ -40,6 +40,11 @@ class LogisticClassifier:
         return 1 / (1 + np.exp(-z))
 
     def GD(self, num_steps=100):
+        """
+        Returns
+        -------
+        train_losses, valid_losses, train_acc, valid_acc, train_auc, valid_auc
+        """
         train_losses = []
         valid_losses = []
         train_acc = []
@@ -50,19 +55,19 @@ class LogisticClassifier:
         for i in range(num_steps):
             pred = self.logistic(self.X_train @ self.theta)
             grad = -self.X_train.T @ (self.y_train - pred) + self.l2_coef * self.theta
-            self.theta -= self.learning_rate * grad
             # 记录损失函数
             train_loss = - (self.y_train.T @ np.log(pred)) - ((1-self.y_train).T @ np.log(1-pred)) + (self.l2_coef/2)*(np.linalg.norm(self.theta)**2)
-            train_losses.append(train_loss)
+            train_losses.append(train_loss / len(self.X_train))
             valid_pred = self.logistic(self.X_valid @ self.theta)
             valid_loss = - (self.y_valid @ np.log(valid_pred)) - ((1-self.y_valid).T @ np.log(1-valid_pred))
-            valid_losses.append(valid_loss)
-
+            valid_losses.append(valid_loss / len(self.X_valid))
             # 记录各类评价指标，阈值采取0.5
             train_acc.append(metrics.acc(y_true=self.y_train, y_pred=(pred>=0.5)))
             valid_acc.append(metrics.acc(y_true=self.y_valid, y_pred=(valid_pred>=0.5)))
             train_auc.append(metrics.auc(y_true=self.y_train, y_pred=(pred>=0.5)))
             valid_auc.append(metrics.auc(y_true=self.y_valid, y_pred=(valid_pred>=0.5)))
+            # 更新梯度，进入下一轮训练
+            self.theta -= self.learning_rate * grad
 
         return train_losses, valid_losses, train_acc, valid_acc, train_auc, valid_auc
 
