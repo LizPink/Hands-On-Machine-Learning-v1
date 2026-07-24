@@ -57,13 +57,13 @@ class LogisticClassifier:
             grad = -self.X_train.T @ (self.y_train - pred) + self.l2_coef * self.theta
             # 记录损失函数
             train_loss = - (self.y_train.T @ np.log(pred)) - ((1-self.y_train).T @ np.log(1-pred)) + (self.l2_coef/2)*(np.linalg.norm(self.theta)**2)
-            train_losses.append(train_loss / len(self.X_train))
+            train_losses.append(train_loss.item() / len(self.X_train))
             valid_pred = self.logistic(self.X_valid @ self.theta)
             valid_loss = - (self.y_valid.T @ np.log(valid_pred)) - ((1-self.y_valid).T @ np.log(1-valid_pred))
-            valid_losses.append(valid_loss / len(self.X_valid))
+            valid_losses.append(valid_loss.item() / len(self.X_valid))
             # 记录各类评价指标，阈值采取0.5
-            train_acc.append(metrics.acc(y_true=self.y_train, y_pred=(pred>=0.5).astype(int)))
-            valid_acc.append(metrics.acc(y_true=self.y_valid, y_pred=(valid_pred>=0.5).astype(int)))
+            train_acc.append(metrics.acc(y_true=self.y_train, y_pred=(pred>=0.5).astype(np.int8)))
+            valid_acc.append(metrics.acc(y_true=self.y_valid, y_pred=(valid_pred>=0.5).astype(np.int8)))
             train_auc.append(metrics.auc(y_true=self.y_train, y_pred=pred))
             valid_auc.append(metrics.auc(y_true=self.y_valid, y_pred=valid_pred))
             # 更新梯度，进入下一轮训练
