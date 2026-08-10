@@ -10,6 +10,8 @@ dependencies = [
     "pandas>=3.0.3",
     "scikit-learn>=1.9.0",
     "seaborn>=0.13.2",
+    "torch==2.13.0",
+    "torchvision==0.28.0",
 ]
 
 [dependency-groups]
@@ -24,3 +26,16 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-name = "ml_from_scratch"
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu132", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+torchvision = [
+    { index = "pytorch-cu132", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
